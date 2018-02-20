@@ -20,7 +20,7 @@ public class Tasks {
     private String description;
 
     @JoinColumn
-    @OneToOne
+    @OneToMany
     private Integer tags;
 
     @JoinColumn
