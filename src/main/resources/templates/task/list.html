@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title th:text="Задачи"></title>
+
+    <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+
+</div>
+<a th:href="${'/students/new'}" th:text="Создать"></a>
+<div th:if="${not #lists.isEmpty(tasks)}">
+    <h2 th:text="Задачи"></h2>
+    <table class="table table-striped">
+        <tr>
+            <th th:text="ID"></th>
+            <th th:text="Имя"></th>
+            <th th:text="Описание"></th>
+            <th th:text="Тег"></th>
+            <th th:text="Родительская Задача"></th>
+            <th th:text="Время выполнения"></th>
+            <th th:text="Планое время исполнения"></th>
+            <th th:text="Статус"></th>
+        </tr>
+        <tr th:each="task : ${tasks}">
+            <td th:text="${task.id}"></td>
+            <td th:text="${task.name}"></td>
+            <td th:text="${task.description}"></td>
+            <td th:with="group=${task.tag}" th:text="${tag.name}"></td>
+            <td th:with="group=${task.parentTask}" th:text="${task.name}"></td>
+            <td th:text="${task.totalTime}"></td>
+            <td th:text="${task.planTime}"></td>
+            <td th:with="group=${task.status}" th:text="${status.name}"></td>
+            <td>
+                <ul class="list-inline">
+                    <li><a th:href="${'/students/delete/' + task.id}" th:text="Удалить"></a> </li>
+                    <li><a th:href="${'/students/edit/' + task.id}" th:text="Редактировать"></a> </li>
+                    <li><a th:href="${'/students/details/' + task.id}" th:text="Карточка"></a> </li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

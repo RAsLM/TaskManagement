@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title th:text="Студенты"></title>
+
+    <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+
+</div>
+<a th:href="${'/students/new'}" th:text="Создать"></a>
+<div th:if="${not #lists.isEmpty(students)}">
+    <h2 th:text="Студенты"></h2>
+    <table class="table table-striped">
+        <tr>
+            <th th:text="ID"></th>
+            <th th:text="Имя"></th>
+            <th th:text="Возраст"></th>
+            <th th:text="Группа"></th>
+            <th th:text="Действия"></th>
+        </tr>
+        <tr th:each="student : ${students}">
+            <td th:text="${student.id}"></td>
+            <td th:text="${student.name}"></td>
+            <td th:text="${student.age}"></td>
+            <td th:with="group=${student.group}" th:text="${group.name}"></td>
+            <td>
+                <ul class="list-inline">
+                    <li><a th:href="${'/students/delete/' + student.id}" th:text="Удалить"></a> </li>
+                    <li><a th:href="${'/students/edit/' + student.id}" th:text="Редактировать"></a> </li>
+                    <li><a th:href="${'/students/details/' + student.id}" th:text="Карточка"></a> </li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
