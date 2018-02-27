@@ -1,14 +1,12 @@
 package com.rasl.pojo;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by ruslan on 19.02.2018.
  */
-public class Tags {
+@Entity
+public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -17,7 +15,7 @@ public class Tags {
     @Column
     private String name;
 
-    public Tags() {
+    public Tag() {
     }
 
     public Integer getId() {

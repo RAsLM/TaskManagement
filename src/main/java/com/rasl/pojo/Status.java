@@ -1,14 +1,12 @@
 package com.rasl.pojo;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by ruslan on 19.02.2018.
  */
-public class Statuses {
+@Entity
+public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -17,7 +15,7 @@ public class Statuses {
     @Column
     private String name;
 
-    public Statuses() {
+    public Status() {
     }
 
     public Integer getId() {

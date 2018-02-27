@@ -1,14 +1,12 @@
 package com.rasl.pojo;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Created by ruslan on 19.02.2018.
  */
+@Entity
 public class WorkLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,35 +1,37 @@
 package com.rasl.services;
 
-import com.rasl.pojo.Tags;
-import com.rasl.repositories.TagsRepository;
+import com.rasl.pojo.Status;
+import com.rasl.repositories.StatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Created by ruslan on 20.02.2018.
  */
-public class TagsService implements PojoService<Tags> {
+@Service
+public class StatusService implements PojoService<Status> {
 
-    private TagsRepository repository;
+    private StatusRepository repository;
 
     @Autowired
-    public void setRepository(TagsRepository repository) {
+    public void setRepository(StatusRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public List<Tags> list() {
+    public List<Status> list() {
         return repository.findAll();
     }
 
     @Override
-    public Tags getById(Integer id) {
+    public Status getById(Integer id) {
         return repository.getOne(id);
     }
 
     @Override
-    public Tags save(Tags obj) {
+    public Status save(Status obj) {
         return repository.save(obj);
     }
 

@@ -3,12 +3,14 @@ package com.rasl.services;
 import com.rasl.pojo.WorkLog;
 import com.rasl.repositories.WorkLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Created by ruslan on 20.02.2018.
  */
+@Service
 public class WorkLogService implements PojoService<WorkLog> {
 
     private WorkLogRepository repository;

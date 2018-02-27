@@ -7,7 +7,7 @@ import java.util.Date;
  * Created by ruslan on 19.02.2018.
  */
 @Entity
-public class Tasks {
+public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -20,12 +20,12 @@ public class Tasks {
     private String description;
 
     @JoinColumn
-    @OneToMany
-    private Integer tags;
+    @OneToOne
+    private Tag tag;
 
     @JoinColumn
-    @ManyToOne
-    private Integer parentTask;
+    @OneToOne
+    private Task parentTask;
 
     @Column
     private Date totalTime;
@@ -35,9 +35,9 @@ public class Tasks {
 
     @JoinColumn
     @OneToOne
-    private Integer status;
+    private Status status;
 
-    public Tasks() {
+    public Task() {
     }
 
     public Integer getId() {
@@ -64,19 +64,19 @@ public class Tasks {
         this.description = description;
     }
 
-    public Integer getTags() {
-        return tags;
+    public Tag getTag() {
+        return tag;
     }
 
-    public void setTags(Integer tags) {
-        this.tags = tags;
+    public void setTag(Tag tag) {
+        this.tag = tag;
     }
 
-    public Integer getParentTask() {
+    public Task getParentTask() {
         return parentTask;
     }
 
-    public void setParentTask(Integer parentTask) {
+    public void setParentTask(Task parentTask) {
         this.parentTask = parentTask;
     }
 
@@ -96,11 +96,11 @@ public class Tasks {
         this.planTime = planTime;
     }
 
-    public Integer getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 }
