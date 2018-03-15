@@ -14,7 +14,7 @@ public class WorkLog {
     private Integer id;
 
     @Column
-    private String name;
+    private String task_id;
 
     @Column
     private Date startTime;
@@ -34,12 +34,12 @@ public class WorkLog {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTask_id() {
+        return task_id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String task_id) {
+        this.task_id = task_id;
     }
 
     public Date getStartTime() {

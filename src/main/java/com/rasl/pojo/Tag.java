@@ -1,11 +1,14 @@
 package com.rasl.pojo;
 
+import lombok.AllArgsConstructor;
+
 import javax.persistence.*;
 
 /**
  * Created by ruslan on 19.02.2018.
  */
 @Entity
+
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +19,10 @@ public class Tag {
     private String name;
 
     public Tag() {
+    }
+
+    public Tag(String name) {
+        this.name = name;
     }
 
     public Integer getId() {

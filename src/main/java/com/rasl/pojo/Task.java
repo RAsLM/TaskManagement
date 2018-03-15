@@ -40,6 +40,29 @@ public class Task {
     public Task() {
     }
 
+    public Task(String name, Tag tag, Status status) {
+        this.name = name;
+        this.tag = tag;
+        this.status = status;
+    }
+
+    public Task(String name, Tag tag, Task parentTask, Status status) {
+        this.name = name;
+        this.tag = tag;
+        this.parentTask = parentTask;
+        this.status = status;
+    }
+
+    public Task(String name, String description, Tag tag, Task parentTask, Date totalTime, Date planTime, Status status) {
+        this.name = name;
+        this.description = description;
+        this.tag = tag;
+        this.parentTask = parentTask;
+        this.totalTime = totalTime;
+        this.planTime = planTime;
+        this.status = status;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -76,15 +99,15 @@ public class Task {
         return parentTask;
     }
 
-    public void setParentTask(Task parentTask) {
-        this.parentTask = parentTask;
+    public void setParentTask(Task parent_task) {
+        this.parentTask = parent_task;
     }
 
-    public Date getTime() {
+    public Date getTotalTime() {
         return totalTime;
     }
 
-    public void setTime(Date totalTime) {
+    public void setTotalTime(Date totalTime) {
         this.totalTime = totalTime;
     }
 
@@ -92,8 +115,8 @@ public class Task {
         return planTime;
     }
 
-    public void setPlanTime(Date planTime) {
-        this.planTime = planTime;
+    public void setPlanTime(Date plan_time) {
+        this.planTime = plan_time;
     }
 
     public Status getStatus() {
