@@ -1,7 +1,12 @@
 package com.rasl.controller;
 
 import com.rasl.pojo.Status;
+import com.rasl.pojo.User;
 import com.rasl.services.StatusService;
+import com.rasl.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by ruslan on 04.03.2018.
@@ -17,15 +23,22 @@ import java.util.List;
 @Controller
 public class StatusController {
     private StatusService statusService;
+    private UserService userService;
 
-    public StatusController(StatusService statusService) {
+    @Autowired
+    public void setStatusService(StatusService statusService) {
         this.statusService = statusService;
     }
 
-    @RequestMapping("statuses/list")
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    @RequestMapping("/statuses/list")
     public String list(Model model){
-        List<Status> statuses = statusService.list();
-        model.addAttribute("statuses", statuses);
+        User currentUser =  userService.getCurrentLoggedInUser();
+        model.addAttribute("statuses", statusService.list(currentUser));
         return "/statuses/list";
     }
 
@@ -50,6 +63,7 @@ public class StatusController {
 
     @RequestMapping(value = "/statuses/save", method = RequestMethod.POST)
     public String save(Status status){
+        status.setUser(userService.getCurrentLoggedInUser());
         statusService.save(status);
         return "redirect:/statuses/list";
     }

@@ -3,10 +3,14 @@ package com.rasl.controller;
 import com.rasl.pojo.Status;
 import com.rasl.pojo.Tag;
 import com.rasl.pojo.Task;
+import com.rasl.pojo.User;
 import com.rasl.services.StatusService;
 import com.rasl.services.TagService;
 import com.rasl.services.TaskService;
+import com.rasl.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class TaskController {
@@ -21,6 +26,7 @@ public class TaskController {
     private TaskService taskService;
     private TagService tagService;
     private StatusService statusService;
+    private UserService userService;
 
     @Autowired
     public void setService(TaskService taskService){
@@ -34,10 +40,21 @@ public class TaskController {
     public void setStatusService(StatusService statusService){
         this.statusService = statusService;
     }
+    @Autowired
+    public void setTaskService(TaskService taskService) {
+        this.taskService = taskService;
+    }
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
-    @RequestMapping("tasks/list")
+    @RequestMapping("/tasks/list")
     public String list(Model model){
-        List<Task> tasks = taskService.list();
+        User currentUser = userService.getCurrentLoggedInUser();
+        List<Task> tasks = taskService.list(currentUser);
+
+        model.addAttribute("wasted", 123);
         model.addAttribute("tasks", tasks);
         return "/tasks/list";
     }
@@ -50,9 +67,10 @@ public class TaskController {
 
     @RequestMapping("/tasks/new")
     public String newTask(Model model){
-        List<Tag> tags = tagService.list();
-        List<Status> statuses = statusService.list();
-        List<Task> parentTasks = taskService.list();
+        User currentUser = userService.getCurrentLoggedInUser();
+        List<Tag> tags = tagService.list(currentUser);
+        List<Status> statuses = statusService.list(currentUser);
+        List<Task> parentTasks = taskService.list(currentUser);
         model.addAttribute("tags", tags);
         model.addAttribute("statuses", statuses);
         model.addAttribute("parentTasks", parentTasks);
@@ -62,9 +80,10 @@ public class TaskController {
 
     @RequestMapping("/tasks/edit/{id}")
     public String edit(@PathVariable Integer id, Model model){
-        List<Tag> tags = tagService.list();
-        List<Status> statuses = statusService.list();
-        List<Task> parentTasks = taskService.list();
+        User currentUser = userService.getCurrentLoggedInUser();
+        List<Tag> tags = tagService.list(currentUser);
+        List<Status> statuses = statusService.list(currentUser);
+        List<Task> parentTasks = taskService.list(currentUser);
         Task task = taskService.getById(id);
 
         model.addAttribute("tags", tags);
@@ -76,6 +95,7 @@ public class TaskController {
 
     @RequestMapping(value = "/tasks/save", method = RequestMethod.POST)
     public String save(Task task){
+        task.setUser(userService.getCurrentLoggedInUser());
         taskService.save(task);
         return "redirect:/tasks/list";
     }

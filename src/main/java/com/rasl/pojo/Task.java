@@ -1,12 +1,19 @@
 package com.rasl.pojo;
 
+import lombok.*;
+
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * Created by ruslan on 19.02.2018.
  */
+
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +27,10 @@ public class Task {
     private String description;
 
     @JoinColumn
+    @ManyToOne
+    private User user;
+
+    @JoinColumn
     @OneToOne
     private Tag tag;
 
@@ -27,103 +38,40 @@ public class Task {
     @OneToOne
     private Task parentTask;
 
-    @Column
-    private Date totalTime;
-
-    @Column
-    private Date planTime;
-
     @JoinColumn
     @OneToOne
     private Status status;
 
-    public Task() {
-    }
+    @Column
+    private int spentTime;
 
-    public Task(String name, Tag tag, Status status) {
-        this.name = name;
-        this.tag = tag;
-        this.status = status;
-    }
+    private String readableTime;
 
-    public Task(String name, Tag tag, Task parentTask, Status status) {
-        this.name = name;
-        this.tag = tag;
-        this.parentTask = parentTask;
-        this.status = status;
-    }
-
-    public Task(String name, String description, Tag tag, Task parentTask, Date totalTime, Date planTime, Status status) {
-        this.name = name;
-        this.description = description;
-        this.tag = tag;
-        this.parentTask = parentTask;
-        this.totalTime = totalTime;
-        this.planTime = planTime;
-        this.status = status;
-    }
+    @Column
+    private boolean inProcess;
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public String getReadableTime() {
 
-    public String getName() {
-        return name;
-    }
+        int sec = spentTime;
+        int min = spentTime / 60;
+        int hours = min > 0 ? min / 60 : 0;
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public String getDescription() {
-        return description;
-    }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+        if (hours > 0){
 
-    public Tag getTag() {
-        return tag;
-    }
+            return String.format("%d:%d:%d", hours, min, sec);
+        }
 
-    public void setTag(Tag tag) {
-        this.tag = tag;
-    }
+        if (min > 0){
+            sec = spentTime % 60;
+            return String.format("%d:%d:%d", hours, min, sec);
+        }
 
-    public Task getParentTask() {
-        return parentTask;
-    }
-
-    public void setParentTask(Task parent_task) {
-        this.parentTask = parent_task;
-    }
-
-    public Date getTotalTime() {
-        return totalTime;
-    }
-
-    public void setTotalTime(Date totalTime) {
-        this.totalTime = totalTime;
-    }
-
-    public Date getPlanTime() {
-        return planTime;
-    }
-
-    public void setPlanTime(Date plan_time) {
-        this.planTime = plan_time;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
+            return String.format("%d:%d:%d", hours, min, sec);
     }
 }

@@ -1,8 +1,12 @@
 package com.rasl.controller;
 
 import com.rasl.pojo.Tag;
+import com.rasl.pojo.User;
 import com.rasl.services.TagService;
+import com.rasl.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by ruslan on 28.02.2018.
@@ -18,15 +23,21 @@ import java.util.List;
 @Controller
 public class TagController {
     private TagService tagService;
+    private UserService userService;
 
     @Autowired
     public void setTagService(TagService tagService) {
         this.tagService = tagService;
     }
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
-    @RequestMapping("tags/list")
+    @RequestMapping("/tags/list")
     public String list(Model model){
-        List<Tag> tags = tagService.list();
+        User currentUser = userService.getCurrentLoggedInUser();
+        List<Tag> tags = tagService.list(currentUser);
         model.addAttribute("tags", tags);
         return "/tags/list";
     }
@@ -52,6 +63,7 @@ public class TagController {
 
     @RequestMapping(value = "/tags/save", method = RequestMethod.POST)
     public String save(Tag tag){
+        tag.setUser(userService.getCurrentLoggedInUser());
         tagService.save(tag);
         return "redirect:/tags/list";
     }
