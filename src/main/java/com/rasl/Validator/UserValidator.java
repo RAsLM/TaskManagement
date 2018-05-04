@@ -47,5 +47,9 @@ public class UserValidator implements Validator {
         if (user.getPassword().length() < 5 || user.getPassword().length() > 32) {
             errors.rejectValue("password", "Size.userForm.password");
         }
+
+        if (!user.getMatchingPassword().equals(user.getPassword())) {
+            errors.rejectValue("matchingPassword", "Diff.userForm.passwordConfirm");
+        }
     }
 }

@@ -4,20 +4,6 @@
 
     <title>Register</title>
 
-    <!--/*/ <th:block th:include="fragments/header:: head"></th:block> /*/-->
-
-    <!--<script type="text/javascript">
-        function doAjax() {
-            $.ajax({
-                url: 'checkStrength',
-                data: ({password: $('#password').val()}),
-                success: function (data) {
-                    $('#strengthValue').html(data);
-                }
-            });
-        }
-    </script>-->
-
 </head>
 <body>
 <div class="container">
@@ -48,7 +34,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="password" th:text="#{reg.password}" onkeyup="doAjax()"></label>
+                        <label for="password" th:text="#{reg.password}"></label>
                         <input type="password" class="form-control" id="password" th:placeholder="#{reg.password}" th:field="*{password}" th:required="required"/>
                         <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="alert alert-danger" role="alert"></div>
                     </div>
