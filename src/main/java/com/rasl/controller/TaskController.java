@@ -53,8 +53,6 @@ public class TaskController {
     public String list(Model model){
         User currentUser = userService.getCurrentLoggedInUser();
         List<Task> tasks = taskService.list(currentUser);
-
-        model.addAttribute("wasted", 123);
         model.addAttribute("tasks", tasks);
         return "/tasks/list";
     }

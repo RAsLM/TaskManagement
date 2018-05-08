@@ -80,12 +80,10 @@ public class WorkLogController {
         task.setSpentTime(wasted);
         taskService.save(task);
 
-
+        //--> tmp code for outputting logs to the console
         System.out.println("Задача с id: " + id + " остановлена");
         System.out.println("WorkLog id: " + workLog.getId() + " Время конца " + workLog.getEndTime());
-        System.out.println(wasted);
-
+        //<--
         return "redirect:/tasks/list";
     }
-
 }

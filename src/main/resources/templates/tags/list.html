@@ -16,16 +16,16 @@
             <tr>
                 <th th:text="ID"></th>
                 <th th:text="Имя"></th>
-                <th th:text="Действия"></th>
+                <th th:text="#{action.actions}"></th>
             </tr>
             <tr th:each="tag : ${tags}">
                 <td th:text="${tag.id}"></td>
                 <td th:text="${tag.name}"></td>
                 <td>
                     <ul class="list-inline">
-                        <li><a th:href="${'/tags/delete/' + tag.id}" th:text="Удалить"></a> </li>
-                        <li><a th:href="${'/tags/edit/' + tag.id}" th:text="Редактировать"></a> </li>
-                        <li><a th:href="${'/tags/details/' + tag.id}" th:text="Карточка"></a> </li>
+                        <li><a th:href="${'/tags/delete/' + tag.id}" th:text="#{action.delete}"></a> </li>
+                        <li><a th:href="${'/tags/edit/' + tag.id}" th:text="#{action.edit}"></a> </li>
+                        <li><a th:href="${'/tags/details/' + tag.id}" th:text="#{action.view}"></a> </li>
                     </ul>
                 </td>
             </tr>

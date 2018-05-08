@@ -11,7 +11,7 @@
     <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
 
     <h2 th:text="'Новая Задача'"></h2>
-    <div>
+    <div class="glyphicon-credit-card">
         <form class="form-horizontal" th:object="${task}" th:action="@{/tasks/save}" method="post">
             <input type="hidden" th:field="*{id}"/>
 
