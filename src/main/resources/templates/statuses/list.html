@@ -2,20 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
 
-    <title th:text="Статусы"></title>
+    <title th:text="#{statuses.statuses}"></title>
 
     <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
 </head>
 <body>
 <div class="container">
     <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
-    <a th:href="${'/statuses/new'}" th:text="Создать"></a>
+    <a th:href="${'/statuses/new'}" th:text="#{statuses.newStatus}"></a>
     <div th:if="${not #lists.isEmpty(statuses)}">
-        <h2 th:text="Статусы"></h2>
+        <h2 th:text="#{statuses.statuses}"></h2>
         <table class="table table-striped">
             <tr>
-                <th th:text="ID"></th>
-                <th th:text="Имя"></th>
+                <th th:text="#{statuses.id}"></th>
+                <th th:text="#{statuses.name}"></th>
                 <th th:text="#{action.actions}"></th>
             </tr>
             <tr th:each="status : ${statuses}">

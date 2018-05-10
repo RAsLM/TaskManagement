@@ -2,20 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
 
-    <title th:text="Tags"></title>
+    <title th:text="#{tags.tags}"></title>
 
     <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
 </head>
 <body>
 <div class="container">
     <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
-    <a class="breadcrumb-item active" th:href="${'/tags/new'}" th:style="${listOfCreditCards}? 'color:#6e45e0'">Новый тег</a>
+    <a class="breadcrumb-item active" th:href="${'/tags/new'}" th:style="${listOfCreditCards}? 'color:#6e45e0'" th:text="#{tags.newTag}"></a>
     <div th:if="${not #lists.isEmpty(tags)}">
-        <h2 th:text="Tag"></h2>
+        <h2 th:text="#{tags.tags}"></h2>
         <table class="table table-striped">
             <tr>
-                <th th:text="ID"></th>
-                <th th:text="Имя"></th>
+                <th th:text="#{tags.id}"></th>
+                <th th:text="#{tags.name}"></th>
                 <th th:text="#{action.actions}"></th>
             </tr>
             <tr th:each="tag : ${tags}">

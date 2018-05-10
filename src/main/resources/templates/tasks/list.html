@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 
-    <title th:text="Задачи"></title>
+    <title th:text="#{tasks.tasks}"></title>
 
     <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
 </head>
 <body>
 <div class="container">
     <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
-    <a th:href="${'/tasks/new'}" th:text="Создать"></a>
+    <a th:href="${'/tasks/new'}" th:text="#{tasks.newTask}"></a>
     <div th:if="${not #lists.isEmpty(tasks)}">
         <h2 th:text="#{tasks.tasks}"></h2>
         <table class="table table-striped">
