@@ -12,4 +12,9 @@ public class MainController {
     public String index(Model model) {
         return "index";
     }
+
+    @RequestMapping("/stopwatch")
+    public String stopwatch(Model model){
+        return "stopwatch";
+    }
 }

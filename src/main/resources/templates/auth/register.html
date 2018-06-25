@@ -3,6 +3,18 @@
 <head lang="en">
 
     <title>Register</title>
+    <!--/*/ <th:block th:include="fragments/header:: head"></th:block> /*/-->
+    <script type="text/javascript">
+        function check() {
+            $.ajax({
+                url: 'checkStrength',
+                data: ({password : $('#password').val()}),
+                success: function(data) {
+                    $('#srenghthValue').html(data);
+                }
+            });
+        }
+    </script>
 
 </head>
 <body>
@@ -35,13 +47,15 @@
 
                     <div class="form-group">
                         <label for="password" th:text="#{reg.password}"></label>
-                        <input type="password" class="form-control" id="password" th:placeholder="#{reg.password}" th:field="*{password}" th:required="required"/>
+                        <input type="password" class="form-control" id="password" th:placeholder="#{reg.password}" th:field="*{password}" th:required="required" onkeyup="check()"/>
+                        <span style="float: right" id="srenghthValue"></span>
                         <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="alert alert-danger" role="alert"></div>
                     </div>
 
                     <div class="form-group">
                         <label for="matchingPassword" th:text="#{reg.passConfirm}"></label>
                         <input type="password" class="form-control" id="matchingPassword" th:placeholder="#{reg.passConfirm}" th:field="*{matchingPassword}" th:required="required"/>
+                        <span style="float: right" id="matchingPassword"></span>
                         <div th:if="${#fields.hasErrors('matchingPassword')}" th:errors="*{matchingPassword}" class="alert alert-danger" role="alert"></div>
                     </div>
 

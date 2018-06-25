@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!--<link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"-->
+    <!--th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"-->
+    <!--rel="stylesheet" media="screen" />-->
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>-->
+
+    <STYLE type="text/css">
+        .sw {
+
+            width: 40px;
+
+            height: 40px;
+
+            font-size: 50px;
+
+            overflow: hidden;
+
+            position: relative;
+
+            float: left;
+
+        }
+
+        .stop {
+            display: none;
+            border-bottom-left-radius: 4px;
+        }
+    </STYLE>
+
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron">
+        <div class="content row">
+            <div class="col-sm-9">
+                <div class="panel-body">
+                    <div class="top-block">
+                        <div class="top-block">
+                            <div class="sw">
+                                <p class="hours">00</p>
+                            </div>
+                            <div class="sw">
+                                <p class="mins">00</p>
+                            </div>
+                            <div class="sw">
+                                <p class="secs">00</p>
+                            </div>
+                            <div class="sw">
+                                <p class="milis">00</p>
+                            </div>
+
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-primary btn-lg button start">Старт</button>
+                                <button type="button" class="btn btn-primary btn-lg button stop">Стоп</button>
+                                <button type="button" class="btn btn-primary btn-lg button reset">Сброс</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var body = document.body;
+    var start = document.querySelector('.start');
+    var stop = document.querySelector('.stop');
+    var reset = document.querySelector('.reset');
+
+    var mil = document.querySelector('.milis');
+    var sec = document.querySelector('.secs');
+    var min = document.querySelector('.mins');
+    var hours = document.querySelector('.hours');
+    var flag = false;
+
+    function createTimeBlock(type) {
+
+        createTimeSection(hours);
+
+        createTimeSection(':');
+
+        createTimeSection(minutes);
+
+        createTimeSection(':');
+
+        createTimeSection(seconds);
+        createTimeSection(':');
+
+        createTimeSection(milliseconds);
+    }
+
+    function displayStopButton() {
+
+        start.style.display = 'none';
+
+        stop.style.display = 'block';
+
+    }
+
+    function displayStartButton() {
+        start.style.display = 'block';
+        stop.style.display = 'none';
+    }
+
+    // Get Date start point
+    function startStopwatch() {
+        if (!flag) initialDate = new Date;
+    }
+
+    function getTime() {
+
+        var currentDate = new Date;
+        timer = new Date(currentDate - initialDate);
+
+        milliseconds = timer.getMilliseconds();
+        seconds = timer.getSeconds();
+        minutes = timer.getMinutes();
+        hours = timer.getUTCHours();
+    }
+
+
+    // display timer in document
+    function counter() {
+        getTime();
+        mil.innerHTML = milliseconds;
+        sec.innerHTML = seconds;
+        min.innerHTML = minutes;
+        hours.innerHTML = hours;
+    }
+
+    // interval for display
+    function displayTimer() {
+        timerId = setInterval(counter, 10);
+    }
+
+
+    function stopTimer() {
+        clearInterval(timerId);
+        getTime();
+        //createTimeBlock('STOP');
+        flag = true;
+    }
+
+    function resetTimer() {
+        flag = false;
+        clearInterval(timerId);
+        start.style.display = 'block';
+        stop.style.display = 'none';
+        mil.innerHTML = '00';
+        min.innerHTML = '00';
+        sec.innerHTML = '00';
+    }
+
+    start.addEventListener('click', startStopwatch);
+    start.addEventListener('click', displayStopButton);
+    start.addEventListener('click', displayTimer);
+
+    stop.addEventListener('click', stopTimer)
+    stop.addEventListener('click', displayStartButton);
+
+    reset.addEventListener('click', resetTimer);
+
+</script>
+</body>
+</html>
