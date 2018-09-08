@@ -52,16 +52,9 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         return messageSource;
     }
 
-//    @Override
-//    public void configurePathMatch(PathMatchConfigurer configurer) {
-//        super.configurePathMatch(configurer);
-//
-//        configurer.setUseSuffixPatternMatch(false);
-//    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
         super.addResourceHandlers(registry);
     }
@@ -74,7 +67,6 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
 
         ObjectMapper mapper = new ObjectMapper();
-        //Registering Hibernate4Module to support lazy objects
         mapper.registerModule(new Hibernate4Module());
 
         messageConverter.setObjectMapper(mapper);
