@@ -106,7 +106,7 @@ public class WorkLogService implements PojoService<WorkLog> {
         List<WorkLog> workLogs = list(currentUser);
 
         for (WorkLog workLog : workLogs) {
-            if (!workLog.getTask().getId().equals(id)){
+            if (!workLog.getTask().getId().equals(id) && workLog.getTask().isInProcess()){
                 workLog.setEndTime(Instant.now());
                 workLog.getTask().setInProcess(false);
                 taskService.save(workLog.getTask());
