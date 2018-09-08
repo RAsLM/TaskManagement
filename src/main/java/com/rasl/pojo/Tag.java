@@ -1,6 +1,6 @@
 package com.rasl.pojo;
 
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -8,7 +8,11 @@ import javax.persistence.*;
  * Created by ruslan on 19.02.2018.
  */
 @Entity
-
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,26 +22,7 @@ public class Tag {
     @Column
     private String name;
 
-    public Tag() {
-    }
-
-    public Tag(String name) {
-        this.name = name;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    @JoinColumn
+    @ManyToOne
+    private User user;
 }

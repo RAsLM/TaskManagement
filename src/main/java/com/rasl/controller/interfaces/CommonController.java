@@ -1,4 +1,4 @@
-package com.rasl.controller;
+package com.rasl.controller.interfaces;
 
 import org.springframework.ui.Model;
 

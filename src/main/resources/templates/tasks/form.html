@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head lang="en">
+<head>
 
     <title th:text="'Новая задача'"></title>
 
@@ -25,7 +25,7 @@
                 <label class="col-sm-2 control-label" th:text="'Описание задачи'"></label>
                 <div class="col-sm-10">
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" th:field="*{description}" th:required="required"/>
+                        <input type="text" class="form-control" th:field="*{description}"/>
                     </div>
                 </div>
                 <label class="col-sm-2 control-label" th:text="'Тег'"></label>
@@ -56,20 +56,6 @@
                     </div>
                 </div>
 
-                <label class="col-sm-2 control-label" th:text="'Время выполнения'"></label>
-                <div class="col-sm-10">
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" th:field="*{totalTime}" th:required="required"/>
-                    </div>
-                </div>
-
-                <label class="col-sm-2 control-label" th:text="'Планое время исполнения'"></label>
-                <div class="col-sm-10">
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" th:field="*{planTime}" th:required="required"/>
-                    </div>
-                </div>
-
                 <label class="col-sm-2 control-label" th:text="'Статус'"></label>
                 <div class="col-sm-10">
                     <div class="col-sm-10">
@@ -89,6 +75,8 @@
             </div>
         </form>
     </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
 </div>
 
 </body>
