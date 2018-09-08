@@ -83,31 +83,33 @@ public class WorkLogService implements PojoService<WorkLog> {
         return lastWorkLog;
     }
 
-    private int findSpendTime(Integer id){
-        User currentUser = userService.getCurrentLoggedInUser();
-        List<WorkLog> workLogs = list(currentUser);
-        List<WorkLog> workLogsSortedByTaskId = new ArrayList<>();
-        for (WorkLog workLogI : workLogs) {
-            if (workLogI.getTask().getId().equals(id)){
-                workLogsSortedByTaskId.add(workLogI);
-            }
-        }
-        long spendTime = 0l;
-        for (WorkLog w : workLogsSortedByTaskId) {
-            spendTime += Duration.between(w.getStartTime(), w.getEndTime()).toMillis();
-            System.out.println(spendTime);
-        }
+//    @Deprecated
+//    private int findSpendTime(Integer id){
+//        User currentUser = userService.getCurrentLoggedInUser();
+//        List<WorkLog> workLogs = list(currentUser);
+//        List<WorkLog> workLogsSortedByTaskId = new ArrayList<>();
+//        for (WorkLog workLogI : workLogs) {
+//            if (workLogI.getTask().getId().equals(id)){
+//                workLogsSortedByTaskId.add(workLogI);
+//            }
+//        }
+//        long spendTime = 0l;
+//        for (WorkLog w : workLogsSortedByTaskId) {
+//            spendTime += Duration.between(w.getStartTime(), w.getEndTime()).toMillis();
+//            System.out.println(spendTime);
+//        }
+//
+//        return (int) spendTime / 1000;
+//    }
 
-        return (int) spendTime / 1000;
-    }
-
-    public void stopAllTasks(Integer id){
+    public void stopAllTasks(Integer id, Long spendTime){
         User currentUser = userService.getCurrentLoggedInUser();
         List<WorkLog> workLogs = list(currentUser);
 
         for (WorkLog workLog : workLogs) {
             if (!workLog.getTask().getId().equals(id)){
-                workLog.setEndTime(Instant.now());
+                //workLog.setEndTime(Instant.now());
+                workLog.setSpendTime(spendTime);
                 workLog.getTask().setInProcess(false);
                 taskService.save(workLog.getTask());
                 save(workLog);
@@ -119,7 +121,7 @@ public class WorkLogService implements PojoService<WorkLog> {
         return findLastWL(id);
     }
 
-    public int getSpendTime(Integer id){
+   /* public int getSpendTime(Integer id){
         return findSpendTime(id);
-    }
+    }*/
 }

@@ -4,17 +4,7 @@
 
     <title>Register</title>
     <!--/*/ <th:block th:include="fragments/header:: head"></th:block> /*/-->
-    <script type="text/javascript">
-        function check() {
-            $.ajax({
-                url: 'checkStrength',
-                data: ({password : $('#password').val()}),
-                success: function(data) {
-                    $('#srenghthValue').html(data);
-                }
-            });
-        }
-    </script>
+    <script type="text/javascript" th:src="@{/js/CheckStrength.js}"></script>
 
 </head>
 <body>

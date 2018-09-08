@@ -5,12 +5,7 @@
     <title th:text="Задачи"></title>
 
     <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
-    <script th:src="@{/js/dynamicUpdate.js}"></script>
-    <script>
-        $(document).ready(function() {
-            $('#example').DataTable();
-        } );
-    </script>
+    <script th:src="@{/js/stopwatch.js}"></script>
 </head>
 <body>
 <div class="container">
@@ -18,20 +13,20 @@
     <a th:href="${'/tasks/new'}" th:text="Создать"></a>
     <div th:if="${not #lists.isEmpty(tasks)}">
         <h2 th:text="#{menu.tasks}"></h2>
-        <table id="example" class="table table-striped display" >
+        <table id="tasks" class="table table-striped display" >
             <tr>
-                <th th:text="ID"></th>
-                <th th:text="Имя"></th>
-                <th th:text="Описание"></th>
-                <th th:text="Тег"></th>
-                <th th:text="'Задача родитель'"></th>
-                <th th:text="Пользователь"></th>
-                <th th:text="СОСТОЯНИЕ"></th>
-                <th th:text="Статус"></th>
-                <th th:text="Действия"></th>
-                <th th:text="'Потраченное время'"></th>
+                <th>id</th>
+                <th>name</th>
+                <th>description</th>
+                <th>teg</th>
+                <th>parentTask</th>
+                <th>user</th>
+                <th>condition</th>
+                <th>status</th>
+                <th>action</th>
+                <th>spendTime</th>
             </tr>
-            <tr th:each="task : ${tasks}">
+            <!--<tr th:each="task : ${tasks}">
                 <td th:text="${task.id}"></td>
                 <td th:text="${task.name}"></td>
                 <td th:text="${task.description}"></td>
@@ -50,9 +45,8 @@
                         </li>
                     </ul>
                 </td>
-                <!--<td th:text="${task.spentTime}"> </td>-->
                 <td th:text="${task.readableTime}"> </td>
-            </tr>
+            </tr>-->
         </table>
     </div>
 

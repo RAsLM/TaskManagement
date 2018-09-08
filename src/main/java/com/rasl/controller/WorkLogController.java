@@ -52,17 +52,17 @@ public class WorkLogController {
     public String startTask(@PathVariable Integer id, Model model){
         WorkLog workLog = new WorkLog();
         Task task = taskService.getById(id);
-        workLogService.stopAllTasks(id);
+       // workLogService.stopAllTasks(id);
         workLog.setTask(task);
         workLog.setUser(userService.getCurrentLoggedInUser());
-        workLog.setStartTime(Instant.now());
+        //workLog.setStartTime(Instant.now());
         task.setInProcess(true);
         taskService.save(task);
         workLogService.save(workLog);
 
 
         System.out.println("Задача с id: " + task.getId() + " запущена");
-        System.out.println("WorkLog id: " + workLog.getId() + " Время начала " + workLog.getStartTime());
+        //System.out.println("WorkLog id: " + workLog.getId() + " Время начала " + workLog.getStartTime());
 
         return "redirect:/tasks/list";
     }
@@ -71,19 +71,19 @@ public class WorkLogController {
     public String stopTask(@PathVariable Integer id, Model model1){
         WorkLog workLog = workLogService.getById(workLogService.getLastWL(id));
         workLog.setUser(userService.getCurrentLoggedInUser());
-        workLog.setEndTime(Instant.now());
+        //workLog.setEndTime(Instant.now());
         workLogService.save(workLog);
 
         Task task = taskService.getById(id);
         task.setInProcess(false);
-        int wasted = workLogService.getSpendTime(id);
-        task.setSpentTime(wasted);
+        //int wasted = workLogService.getSpendTime(id);
+        //task.setSpentTime(wasted);
         taskService.save(task);
 
 
         System.out.println("Задача с id: " + id + " остановлена");
-        System.out.println("WorkLog id: " + workLog.getId() + " Время конца " + workLog.getEndTime());
-        System.out.println(wasted);
+        //System.out.println("WorkLog id: " + workLog.getId() + " Время конца " + workLog.getEndTime());
+        //System.out.println(wasted);
 
         return "redirect:/tasks/list";
     }

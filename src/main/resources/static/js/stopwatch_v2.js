@@ -1,8 +1,8 @@
-var swList;
+var taskListInterne;
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
 
-function add() {
+/*function add() {
     $.ajax({
         url: 'stopwatch/api/add',
         success: function(stopwatchList) {
@@ -26,13 +26,13 @@ function remove() {
             drawTable();
         }
     });
-}
+}*/
 
 function start(id){
     $.ajax({
         type: "POST",
         url: 'stopwatch/api/start/' + id,
-        data: JSON.stringify(swList),
+        data: JSON.stringify(taskListInterne),
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -45,8 +45,8 @@ function start(id){
                 xhr.setRequestHeader(header, token);
             }
         },
-        success: function(stopwatchList) {
-            swList = stopwatchList;
+        success: function(taskListExterne) {
+            taskListInterne = taskListExterne;
             drawTable();
         },error: function (e) {
             alert(e);
@@ -58,7 +58,7 @@ function stop(id){
     $.ajax({
         type: "POST",
         url: 'stopwatch/api/stop/' + id,
-        data: JSON.stringify(swList),
+        data: JSON.stringify(taskListInterne),
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -71,8 +71,8 @@ function stop(id){
                 xhr.setRequestHeader(header, token);
             }
         },
-        success: function (stopwatchList) {
-            swList = stopwatchList;
+        success: function (taskListExterne) {
+            taskListInterne = taskListExterne;
         },error: function (e) {
             alert(e);
         }
@@ -116,16 +116,16 @@ $( document ).ready( // запускается при загрузке доку�
 
 function drawTable() {
 
-    var $swTable = $("#swTable tdbody")
+    var $tasks = $("#tasks tdbody")
     var $row = $("tr#id-")
 
-    while(swTable.rows.length > 1) {
-        swTable.deleteRow(1);
+    while($tasks.rows.length > 1) {
+        $tasks.deleteRow(1);
     }
 
 
 
-    for (var i = 0; i < swList.length; i++) {
+    for (var i = 0; i < taskListInterne.length; i++) {
         var row = swTable.insertRow(1);
         var cellId = row.insertCell(0);
         var cellTime = row.insertCell(1);
