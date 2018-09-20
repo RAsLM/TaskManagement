@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 
-    <title th:text="'Новая задача'"></title>
+    <title th:text="#{tasks.newTask}"></title>
 
     <!--/*/ <th:block th:include="fragments/header:: head"></th:block> /*/-->
 </head>
@@ -10,25 +10,25 @@
 <div class="container">
     <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
 
-    <h2 th:text="'Новая Задача'"></h2>
-    <div>
+    <h2 th:text="#{tasks.newTask}"></h2>
+    <div class="glyphicon-credit-card">
         <form class="form-horizontal" th:object="${task}" th:action="@{/tasks/save}" method="post">
             <input type="hidden" th:field="*{id}"/>
 
             <div class="form-group">
-                <label class="col-sm-2 control-label" th:text="'Имя задачи'"></label>
+                <label class="col-sm-2 control-label" th:text="#{tasks.name}"></label>
                 <div class="col-sm-10">
                     <div class="col-sm-10">
                         <input type="text" class="form-control" th:field="*{name}" th:required="required"/>
                     </div>
                 </div>
-                <label class="col-sm-2 control-label" th:text="'Описание задачи'"></label>
+                <label class="col-sm-2 control-label" th:text="#{tasks.description}"></label>
                 <div class="col-sm-10">
                     <div class="col-sm-10">
                         <input type="text" class="form-control" th:field="*{description}"/>
                     </div>
                 </div>
-                <label class="col-sm-2 control-label" th:text="'Тег'"></label>
+                <label class="col-sm-2 control-label" th:text="#{tasks.tags}"></label>
                 <div class="col-sm-10">
                     <div class="col-sm-10">
                         <select th:field="*{tag}" size="1" class="form-control" th:required="required">
@@ -42,7 +42,7 @@
                     </div>
                 </div>
 
-                <label class="col-sm-2 control-label" th:text="'Родительская Задача'"></label>
+                <label class="col-sm-2 control-label" th:text="#{tasks.parentTask}"></label>
                 <div class="col-sm-10">
                     <div class="col-sm-10">
                         <select th:field="*{parentTask}" size="1" class="form-control">
@@ -56,7 +56,7 @@
                     </div>
                 </div>
 
-                <label class="col-sm-2 control-label" th:text="'Статус'"></label>
+                <label class="col-sm-2 control-label" th:text="#{tasks.status}"></label>
                 <div class="col-sm-10">
                     <div class="col-sm-10">
                         <select th:field="*{status}" size="1" class="form-control" th:required="required">
@@ -71,7 +71,7 @@
                 </div>
             </div>
             <div class="row">
-                <button type="submit" class="btn btn-default" th:text="'Сохранить'"></button>
+                <button type="submit" class="btn btn-default" th:text="#{form.save}"></button>
             </div>
         </form>
     </div>

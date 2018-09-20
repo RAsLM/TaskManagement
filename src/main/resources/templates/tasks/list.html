@@ -2,28 +2,28 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 
-    <title th:text="Задачи"></title>
+    <title th:text="#{tasks.tasks}"></title>
 
     <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
 </head>
 <body>
 <div class="container">
     <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
-    <a th:href="${'/tasks/new'}" th:text="Создать"></a>
+    <a th:href="${'/tasks/new'}" th:text="#{tasks.newTask}"></a>
     <div th:if="${not #lists.isEmpty(tasks)}">
-        <h2 th:text="#{menu.tasks}"></h2>
+        <h2 th:text="#{tasks.tasks}"></h2>
         <table class="table table-striped">
             <tr>
-                <th th:text="ID"></th>
-                <th th:text="Имя"></th>
-                <th th:text="Описание"></th>
-                <th th:text="Тег"></th>
-                <th th:text="'Задача родитель'"></th>
-                <th th:text="Пользователь"></th>
+                <th th:text="#{tasks.id}"></th>
+                <th th:text="#{tasks.name}"></th>
+                <th th:text="#{tasks.description}"></th>
+                <th th:text="#{tasks.tags}"></th>
+                <th th:text="#{tasks.parentTask}"></th>
+                <th th:text="#{tasks.user}"></th>
                 <th th:text="СОСТОЯНИЕ"></th>
-                <th th:text="Статус"></th>
-                <th th:text="Действия"></th>
-                <th th:text="'Потраченное время'"></th>
+                <th th:text="#{tasks.status}"></th>
+                <th th:text="#{action.actions}"></th>
+                <th th:text="#{tasks.spentTime}"></th>
             </tr>
             <tr th:each="task : ${tasks}">
                 <td th:text="${task.id}"></td>
@@ -36,15 +36,14 @@
                 <td th:text="${task?.status?.name}"></td>
                 <td>
                     <ul class="list-inline">
-                        <li><a th:href="${'/tasks/delete/' + task.id}" th:text="Удалить"></a></li>
-                        <li><a th:href="${'/tasks/edit/' + task.id}" th:text="Редактировать"></a></li>
-                        <li><a th:href="${'/tasks/details/' + task.id}" th:text="Карточка"></a></li>
-                        <li> <a th:if="${task.inProcess == false}" th:href="${'/workLog/start/' + task.id}" th:text="Старт"></a>
-                             <a th:if="${task.inProcess != false}" th:href="${'/workLog/stop/' + task.id}" th:text="Стоп"></a>
+                        <li><a th:href="${'/tasks/delete/' + task.id}" th:text="#{action.delete}"></a></li>
+                        <li><a th:href="${'/tasks/edit/' + task.id}" th:text="#{action.edit}"></a></li>
+                        <li><a th:href="${'/tasks/details/' + task.id}" th:text="#{action.view}"></a></li>
+                        <li> <a th:if="${task.inProcess == false}" th:href="${'/workLog/start/' + task.id}" th:text="#{action.start}"></a>
+                             <a th:if="${task.inProcess != false}" th:href="${'/workLog/stop/' + task.id}" th:text="#{action.stop}"></a>
                         </li>
                     </ul>
                 </td>
-                <!--<td th:text="${task.spentTime}"> </td>-->
                 <td th:text="${task.readableTime}"> </td>
             </tr>
         </table>

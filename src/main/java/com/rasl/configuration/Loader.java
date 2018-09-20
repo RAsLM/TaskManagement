@@ -67,7 +67,7 @@ public class Loader implements ApplicationListener<ContextRefreshedEvent> {
 
         List<Task> tasks = taskService.list();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             int random = 0 + (int) (Math.random() * 9);
             int randomUser = 0 + (int) (Math.random() * 3);
             taskService.save(
