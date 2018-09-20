@@ -1,38 +1,11 @@
-var swList;
+var taskListInterne;
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
 
-function add() {
+function getTable() {
     $.ajax({
-        url: 'stopwatch/api/add',
-        success: function(stopwatchList) {
-            swList = stopwatchList;
-            drawTable();
-        }
-    });
-}
-
-function remove() {
-    $.ajax({
-        type: post,
-        dataType: 'json',
-        url: 'stopwatch/api/remove',
-        beforeSend: function(xhr) {
-            if (header && token) {
-                xhr.setRequestHeader(header, token);
-            }
-        },
-        success: function() {
-            drawTable();
-        }
-    });
-}
-
-function start(id){
-    $.ajax({
-        type: "POST",
-        url: 'stopwatch/api/start/' + id,
-        data: JSON.stringify(swList),
+        type: "GET",
+        url: '/getTable',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -45,8 +18,32 @@ function start(id){
                 xhr.setRequestHeader(header, token);
             }
         },
-        success: function(stopwatchList) {
-            swList = stopwatchList;
+        success: function (taskListExterne) {
+            taskListInterne = taskListExterne;
+            drawTable();
+        }
+    });
+}
+
+function start(id){
+    $.ajax({
+        type: "POST",
+        url: '/workLog/api/start/' + id,
+        data: JSON.stringify(taskListInterne),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        dataType: 'json',
+        cache: false,
+        timeout: 600000,
+        beforeSend: function(xhr) {
+            if (header && token) {
+                xhr.setRequestHeader(header, token);
+            }
+        },
+        success: function(taskListExterne) {
+            taskListInterne = taskListExterne;
             drawTable();
         },error: function (e) {
             alert(e);
@@ -57,8 +54,8 @@ function start(id){
 function stop(id){
     $.ajax({
         type: "POST",
-        url: 'stopwatch/api/stop/' + id,
-        data: JSON.stringify(swList),
+        url: '/workLog/api/stop/' + id,
+        data: JSON.stringify(taskListInterne),
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -71,8 +68,8 @@ function stop(id){
                 xhr.setRequestHeader(header, token);
             }
         },
-        success: function (stopwatchList) {
-            swList = stopwatchList;
+        success: function (taskListExterne) {
+            taskListInterne = taskListExterne;
         },error: function (e) {
             alert(e);
         }
@@ -81,19 +78,19 @@ function stop(id){
 }
 
 function setTime(){
-    time = parseInt($("#time").val()); // просто задаем значение счетчику
+    time = parseInt($("#SW").val()); // просто задаем значение счетчику
 }
 
 $( document ).ready( // запускается при загрузке документа
     function(){
         setInterval(function() { // циклично выполняет функцию с промежутком
-            if(typeof swList !== 'undefined') {
-                for (var i = 0; i < swList.length; i++) {
-                    if (swList[i].started) {
-                        swList[i].time = swList[i].time + 1;
+            if(typeof taskListInterne !== 'undefined') {
+                for (var i = 0; i < taskListInterne.length; i++) {
+                    if (taskListInterne[i].inProcess) {
+                        taskListInterne[i].spentTime = taskListInterne[i].spentTime + 1;
                     }
 
-                    time = swList[i].time; // просто наращиваем счетчик
+                    time = taskListInterne[i].spentTime; // просто наращиваем счетчик
                     var sec, min, hour;
 
                     sec = Math.abs(Math.floor(time % 60));
@@ -104,9 +101,9 @@ $( document ).ready( // запускается при загрузке доку�
                     if (min.toString().length == 1) min = '0' + min;
                     if (hour.toString().length == 1) hour = '0' + hour;
 
-                    $("#hour_" + swList[i].id).html(hour);
-                    $("#min_" + swList[i].id).html(min);
-                    $("#sec_" + swList[i].id).html(sec);
+                    $("#hour_" + taskListInterne[i].id).html(hour);
+                    $("#min_" + taskListInterne[i].id).html(min);
+                    $("#sec_" + taskListInterne[i].id).html(sec);
                 }
             }
         }, 1000) // значение промежутка в милисекундах (1 сек)
@@ -116,27 +113,43 @@ $( document ).ready( // запускается при загрузке доку�
 
 function drawTable() {
 
-    var $swTable = $("#swTable tdbody")
+    var $tasks = $("#tasks tdbody")
     var $row = $("tr#id-")
 
-    while(swTable.rows.length > 1) {
-        swTable.deleteRow(1);
+    while(tasks.rows.length > 1) {
+        tasks.deleteRow(1);
     }
 
 
 
-    for (var i = 0; i < swList.length; i++) {
-        var row = swTable.insertRow(1);
+    for (var i = 0; i < taskListInterne.length; i++) {
+        var row = tasks.insertRow(1);
         var cellId = row.insertCell(0);
-        var cellTime = row.insertCell(1);
-        var cellActions = row.insertCell(2);
+        var cellName = row.insertCell(1);
+        var cellDescription = row.insertCell(2);
+        var cellTeg = row.insertCell(3);
+        var cellParentTask = row.insertCell(4);
+        var cellUser = row.insertCell(5);
+        var cellCondition = row.insertCell(6);
+        var cellStatus = row.insertCell(7);
+        var cellAction = row.insertCell(8);
+        var cellSpentTime = row.insertCell(9);
+        var cellSW = row.insertCell(10);
 
-        cellId.innerHTML = swList[i].id;
-        cellTime.innerHTML = '\t<p style="display:inline" id="hour_' + swList[i].id +'" class="sw"></p>' +
-            '\t<p style="display:inline" id="min_' + swList[i].id +'" class="sw"></p>\n' +
-            '\t<p style="display:inline" id="sec_' + swList[i].id +'" clsss="sw"></p>\n';
+        cellId.innerHTML = taskListInterne[i].id;
+        cellName.innerHTML = taskListInterne[i].name;
+        cellDescription.innerHTML = taskListInterne[i].description;
+        cellTeg.innerHTML = taskListInterne[i].tag.name;
+        cellParentTask.innerHTML = "";//taskListInterne[i].parentTask.name;
+        cellUser.innerHTML = taskListInterne[i].user.name;
+        cellCondition.innerHTML = taskListInterne[i].inProcess;
+        cellStatus.innerHTML = taskListInterne[i].status.name;
+        cellAction.innerHTML = '<button onclick=\"start(' + taskListInterne[i].id +');\" >start</button> <button onclick=\"stop(' + taskListInterne[i].id +');" >stop</button>';
+        cellSpentTime.innerHTML = taskListInterne[i].spentTime;
 
-
-        cellActions.innerHTML = '<button onclick="start(' + swList[i].id +');" >start</button> <button onclick="stop(' + swList[i].id +');" >stop</button>';
+        cellId.innerHTML = taskListInterne[i].id;
+        cellSW.innerHTML = '\t<p style="display:inline" id="hour_' + taskListInterne[i].id +'" class="sw"></p>' +
+            '\t<p style="display:inline" id="min_' + taskListInterne[i].id +'" class="sw"></p>\n' +
+            '\t<p style="display:inline" id="sec_' + taskListInterne[i].id +'" clsss="sw"></p>\n';
     }
 }

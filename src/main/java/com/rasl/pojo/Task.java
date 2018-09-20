@@ -50,10 +50,6 @@ public class Task {
     @Column
     private boolean inProcess;
 
-    public Integer getId() {
-        return id;
-    }
-
     public String getReadableTime() {
 
         int sec = spentTime;
