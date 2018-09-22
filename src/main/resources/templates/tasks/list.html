@@ -27,27 +27,6 @@
                 <th th:text="#{tasks.spentTime}">spentTime</th>
                 <th th:text="#{tasks.SW}">SW</th>
             </tr>
-            <!--<tr th:each="task : ${tasks}">
-                <td th:text="${task.id}"></td>
-                <td th:text="${task.name}"></td>
-                <td th:text="${task.description}"></td>
-                <td th:text="${task?.tag?.name}"></td>
-                <td th:text="${task?.parentTask?.name}"></td>
-                <td th:text="${task?.user?.username}"></td>
-                <td th:text="${task.inProcess}"></td>
-                <td th:text="${task?.status?.name}"></td>
-                <td>
-                    <ul class="list-inline">
-                        <li><a th:href="${'/tasks/delete/' + task.id}" th:text="Удалить"></a></li>
-                        <li><a th:href="${'/tasks/edit/' + task.id}" th:text="Редактировать"></a></li>
-                        <li><a th:href="${'/tasks/details/' + task.id}" th:text="Карточка"></a></li>
-                        <li> <a name="start" th:if="${task.inProcess == false}" th:href="${'/workLog/start/' + task.id}" th:text="Старт"></a>
-                             <a name="stop" th:if="${task.inProcess != false}" th:href="${'/workLog/stop/' + task.id}" th:text="Стоп"></a>
-                        </li>
-                    </ul>
-                </td>
-                <td th:text="${task.readableTime}"> </td>
-            </tr>-->
             <script th:inline="javascript">
                 $(document).ready(getTable());
             </script>

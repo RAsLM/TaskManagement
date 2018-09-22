@@ -1,4 +1,4 @@
-var taskListInterne;
+var taskListInternal;
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
 
@@ -18,18 +18,18 @@ function getTable() {
                 xhr.setRequestHeader(header, token);
             }
         },
-        success: function (taskListExterne) {
-            taskListInterne = taskListExterne;
+        success: function (taskListExternal) {
+            taskListInternal = taskListExternal;
             drawTable();
         }
     });
 }
 
-function start(id){
+function start(id, i){
     $.ajax({
         type: "POST",
         url: '/workLog/api/start/' + id,
-        data: JSON.stringify(taskListInterne),
+        data: JSON.stringify(taskListInternal[i].spentTime),
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -42,8 +42,9 @@ function start(id){
                 xhr.setRequestHeader(header, token);
             }
         },
-        success: function(taskListExterne) {
-            taskListInterne = taskListExterne;
+        success: function(taskSpentTime) {
+            taskListInternal[i].inProcess = taskSpentTime.inProcess;
+            taskListInternal[i].spentTime = taskSpentTime.spentTime;
             drawTable();
         },error: function (e) {
             alert(e);
@@ -51,11 +52,11 @@ function start(id){
     });
 }
 
-function stop(id){
+function stop(id, i){
     $.ajax({
         type: "POST",
         url: '/workLog/api/stop/' + id,
-        data: JSON.stringify(taskListInterne),
+        data: JSON.stringify(taskListInternal[i].spentTime),
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -68,29 +69,27 @@ function stop(id){
                 xhr.setRequestHeader(header, token);
             }
         },
-        success: function (taskListExterne) {
-            taskListInterne = taskListExterne;
+        success: function (taskSpentTime) {
+            taskListInternal[i].inProcess = taskSpentTime.inProcess;
+            taskListInternal[i].spentTime = taskSpentTime.spentTime;
+            drawTable();
         },error: function (e) {
             alert(e);
         }
 
     });
-}
-
-function setTime(){
-    time = parseInt($("#SW").val()); // просто задаем значение счетчику
 }
 
 $( document ).ready( // запускается при загрузке документа
     function(){
         setInterval(function() { // циклично выполняет функцию с промежутком
-            if(typeof taskListInterne !== 'undefined') {
-                for (var i = 0; i < taskListInterne.length; i++) {
-                    if (taskListInterne[i].inProcess) {
-                        taskListInterne[i].spentTime = taskListInterne[i].spentTime + 1;
+            if(typeof taskListInternal !== 'undefined') {
+                for (var i = 0; i < taskListInternal.length; i++) {
+                    if (taskListInternal[i].inProcess) {
+                        taskListInternal[i].spentTime = taskListInternal[i].spentTime + 1;
                     }
 
-                    time = taskListInterne[i].spentTime; // просто наращиваем счетчик
+                    time = taskListInternal[i].spentTime; // просто наращиваем счетчик
                     var sec, min, hour;
 
                     sec = Math.abs(Math.floor(time % 60));
@@ -101,9 +100,9 @@ $( document ).ready( // запускается при загрузке доку�
                     if (min.toString().length == 1) min = '0' + min;
                     if (hour.toString().length == 1) hour = '0' + hour;
 
-                    $("#hour_" + taskListInterne[i].id).html(hour);
-                    $("#min_" + taskListInterne[i].id).html(min);
-                    $("#sec_" + taskListInterne[i].id).html(sec);
+                    $("#hour_" + taskListInternal[i].id).html(hour);
+                    $("#min_" + taskListInternal[i].id).html(min);
+                    $("#sec_" + taskListInternal[i].id).html(sec);
                 }
             }
         }, 1000) // значение промежутка в милисекундах (1 сек)
@@ -122,7 +121,7 @@ function drawTable() {
 
 
 
-    for (var i = 0; i < taskListInterne.length; i++) {
+    for (var i = 0; i < taskListInternal.length; i++) {
         var row = tasks.insertRow(1);
         var cellId = row.insertCell(0);
         var cellName = row.insertCell(1);
@@ -136,20 +135,23 @@ function drawTable() {
         var cellSpentTime = row.insertCell(9);
         var cellSW = row.insertCell(10);
 
-        cellId.innerHTML = taskListInterne[i].id;
-        cellName.innerHTML = taskListInterne[i].name;
-        cellDescription.innerHTML = taskListInterne[i].description;
-        cellTeg.innerHTML = taskListInterne[i].tag.name;
+        cellId.innerHTML = i+1;
+        cellName.innerHTML = taskListInternal[i].name;
+        cellDescription.innerHTML = taskListInternal[i].description;
+        cellTeg.innerHTML = taskListInternal[i].tag.name;
         cellParentTask.innerHTML = "";//taskListInterne[i].parentTask.name;
-        cellUser.innerHTML = taskListInterne[i].user.name;
-        cellCondition.innerHTML = taskListInterne[i].inProcess;
-        cellStatus.innerHTML = taskListInterne[i].status.name;
-        cellAction.innerHTML = '<button onclick=\"start(' + taskListInterne[i].id +');\" >start</button> <button onclick=\"stop(' + taskListInterne[i].id +');" >stop</button>';
-        cellSpentTime.innerHTML = taskListInterne[i].spentTime;
+        cellUser.innerHTML = taskListInternal[i].user.name;
+        cellCondition.innerHTML = taskListInternal[i].inProcess;
+        cellStatus.innerHTML = taskListInternal[i].status.name;
+        if (taskListInternal[i].inProcess == false){
+            cellAction.innerHTML = '<button type="button" class="btn btn-primary" onclick=\"start((' + taskListInternal[i].id +'), (' + i +'));\" >start</button>';
+        } else{
+            cellAction.innerHTML = '<button type="button" class="btn btn-primary" onclick=\"stop((' + taskListInternal[i].id +'), (' + i +'));" >stop</button type="button" class="btn btn-primary>';
+        }
+        cellSpentTime.innerHTML = taskListInternal[i].spentTime;
 
-        cellId.innerHTML = taskListInterne[i].id;
-        cellSW.innerHTML = '\t<p style="display:inline" id="hour_' + taskListInterne[i].id +'" class="sw"></p>' +
-            '\t<p style="display:inline" id="min_' + taskListInterne[i].id +'" class="sw"></p>\n' +
-            '\t<p style="display:inline" id="sec_' + taskListInterne[i].id +'" clsss="sw"></p>\n';
+        cellSW.innerHTML = '\t<p style="display:inline" id="hour_' + taskListInternal[i].id +'" class="sw"></p>' +
+            '\t<p style="display:inline" id="min_' + taskListInternal[i].id +'" class="sw"></p>\n' +
+            '\t<p style="display:inline" id="sec_' + taskListInternal[i].id +'" clsss="sw"></p>\n';
     }
 }

@@ -30,12 +30,6 @@ public class WorkLog {
     @OneToOne
     private Task task;
 
-    //@Column
-    //private Instant startTime;
-
-    //@Column
-    //private Instant endTime;
-
     @Column
     private Long spendTime;
 }
