@@ -51,8 +51,8 @@ public class WorkLogController {
     public @ResponseBody
     JsonResponse start(@PathVariable Integer id, @RequestBody Long taskSpentTime){
         User currentUser = userService.getCurrentLoggedInUser();
-        List<Task> taskListIntern = taskService.list(currentUser);
-        for (Task task : taskListIntern) {
+        List<Task> taskList = taskService.list(currentUser);
+        for (Task task : taskList) {
             if(task.getId() != id && task.isInProcess()){
                 task.setInProcess(false);
                 taskService.save(task);
@@ -75,8 +75,8 @@ public class WorkLogController {
     public @ResponseBody
     JsonResponse stop(@PathVariable Integer id, @RequestBody Long taskSpentTime){
         User currentUser = userService.getCurrentLoggedInUser();
-        List<Task> taskListIntern = taskService.list(currentUser);
-        for (Task task : taskListIntern) {
+        List<Task> taskList = taskService.list(currentUser);
+        for (Task task : taskList) {
             if(task.getId() == id){
                 task.setSpentTime(taskSpentTime);
                 task.setInProcess(false);

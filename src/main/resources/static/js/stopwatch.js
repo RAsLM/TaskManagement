@@ -42,9 +42,9 @@ function start(id, i){
                 xhr.setRequestHeader(header, token);
             }
         },
-        success: function(taskSpentTime) {
-            taskListInternal[i].inProcess = taskSpentTime.inProcess;
-            taskListInternal[i].spentTime = taskSpentTime.spentTime;
+        success: function(jsonResponse) {
+            taskListInternal[i].inProcess = jsonResponse.inProcess;
+            taskListInternal[i].spentTime = jsonResponse.spentTime;
             drawTable();
         },error: function (e) {
             alert(e);
@@ -69,9 +69,9 @@ function stop(id, i){
                 xhr.setRequestHeader(header, token);
             }
         },
-        success: function (taskSpentTime) {
-            taskListInternal[i].inProcess = taskSpentTime.inProcess;
-            taskListInternal[i].spentTime = taskSpentTime.spentTime;
+        success: function (jsonResponse) {
+            taskListInternal[i].inProcess = jsonResponse.inProcess;
+            taskListInternal[i].spentTime = jsonResponse.spentTime;
             drawTable();
         },error: function (e) {
             alert(e);
