@@ -3,9 +3,6 @@ package com.rasl.pojo;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.Instant;
-
 
 /**
  * Created by ruslan on 19.02.2018.
