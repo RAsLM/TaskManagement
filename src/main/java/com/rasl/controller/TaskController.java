@@ -9,16 +9,13 @@ import com.rasl.services.TagService;
 import com.rasl.services.TaskService;
 import com.rasl.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class TaskController {
@@ -50,13 +47,24 @@ public class TaskController {
     }
 
     @RequestMapping("/tasks/list")
-    public String list(Model model){
-        User currentUser = userService.getCurrentLoggedInUser();
-        List<Task> tasks = taskService.list(currentUser);
-
-        model.addAttribute("tasks", tasks);
+    public String list() {
         return "/tasks/list";
     }
+
+    @RequestMapping(value = "/getTable", produces = "application/json", method = RequestMethod.GET)
+    public @ResponseBody
+    ResponseEntity<List<Task>> tasks(){
+        User currentUser = userService.getCurrentLoggedInUser();
+        List<Task> tasks = taskService.list(currentUser);
+        for (Task task: tasks) {
+            if(task.getSpentTime() == null){
+                task.setSpentTime(0L);
+            }
+        }
+        tasks = taskService.list(currentUser);
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
+    }
+
 
     @RequestMapping("/tasks/delete/{id}")
     public String delete(@PathVariable Integer id, Model model){

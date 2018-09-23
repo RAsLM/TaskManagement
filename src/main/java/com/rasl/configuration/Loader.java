@@ -40,7 +40,7 @@ public class Loader implements ApplicationListener<ContextRefreshedEvent> {
             userService.save(
                     User.builder()
                             .username("roos" + i)
-                            .password(new BCryptPasswordEncoder().encode("password" + i))
+                            .password(new BCryptPasswordEncoder().encode("pass" + i))
                             .build());
         }
 

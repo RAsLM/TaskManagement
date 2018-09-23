@@ -43,35 +43,8 @@ public class Task {
     private Status status;
 
     @Column
-    private int spentTime;
-
-    private String readableTime;
+    private Long spentTime;
 
     @Column
     private boolean inProcess;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getReadableTime() {
-
-        int sec = spentTime;
-        int min = spentTime / 60;
-        int hours = min > 0 ? min / 60 : 0;
-
-
-
-        if (hours > 0){
-
-            return String.format("%d:%d:%d", hours, min, sec);
-        }
-
-        if (min > 0){
-            sec = spentTime % 60;
-            return String.format("%d:%d:%d", hours, min, sec);
-        }
-
-            return String.format("%d:%d:%d", hours, min, sec);
-    }
 }
