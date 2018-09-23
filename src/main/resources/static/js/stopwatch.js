@@ -139,7 +139,7 @@ function drawTable() {
         cellName.innerHTML = taskListInternal[i].name;
         cellDescription.innerHTML = taskListInternal[i].description;
         cellTeg.innerHTML = taskListInternal[i].tag.name;
-        cellParentTask.innerHTML = "";//taskListInterne[i].parentTask.name;
+        cellParentTask.innerHTML = "";
         cellUser.innerHTML = taskListInternal[i].user.name;
         cellCondition.innerHTML = taskListInternal[i].inProcess;
         cellStatus.innerHTML = taskListInternal[i].status.name;
