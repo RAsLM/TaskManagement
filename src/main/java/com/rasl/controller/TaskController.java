@@ -56,12 +56,6 @@ public class TaskController {
     ResponseEntity<List<Task>> tasks(){
         User currentUser = userService.getCurrentLoggedInUser();
         List<Task> tasks = taskService.list(currentUser);
-        for (Task task: tasks) {
-            if(task.getSpentTime() == null){
-                task.setSpentTime(0L);
-            }
-        }
-        tasks = taskService.list(currentUser);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
