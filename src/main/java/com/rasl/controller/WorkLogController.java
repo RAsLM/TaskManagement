@@ -1,26 +1,18 @@
 package com.rasl.controller;
 
 import com.rasl.pojo.Task;
-import com.rasl.pojo.WorkLog;
+import com.rasl.pojo.User;
 import com.rasl.services.TaskService;
 import com.rasl.services.UserService;
 import com.rasl.services.WorkLogService;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
-
-import static org.aspectj.bridge.Version.getTime;
 
 /**
  * Created by ruslan on 04.03.2018.
@@ -48,42 +40,53 @@ public class WorkLogController {
         this.userService = userService;
     }
 
-    @RequestMapping("workLog/start/{id}")
-    public String startTask(@PathVariable Integer id, Model model){
-        WorkLog workLog = new WorkLog();
-        Task task = taskService.getById(id);
-        workLogService.stopAllTasks(id);
-        workLog.setTask(task);
-        workLog.setUser(userService.getCurrentLoggedInUser());
-        workLog.setStartTime(Instant.now());
-        task.setInProcess(true);
-        taskService.save(task);
-        workLogService.save(workLog);
-
-
-        System.out.println("Задача с id: " + task.getId() + " запущена");
-        System.out.println("WorkLog id: " + workLog.getId() + " Время начала " + workLog.getStartTime());
-
-        return "redirect:/tasks/list";
+    @Builder @Getter @Setter
+    static class JsonResponse {
+        int id;
+        long spentTime;
+        boolean inProcess;
     }
 
-    @RequestMapping("workLog/stop/{id}")
-    public String stopTask(@PathVariable Integer id, Model model1){
-        WorkLog workLog = workLogService.getById(workLogService.getLastWL(id));
-        workLog.setUser(userService.getCurrentLoggedInUser());
-        workLog.setEndTime(Instant.now());
-        workLogService.save(workLog);
+    @RequestMapping(value = "workLog/api/start/{id}", produces = "application/json", method = RequestMethod.POST)
+    public @ResponseBody
+    JsonResponse start(@PathVariable Integer id, @RequestBody Long taskSpentTime){
+        User currentUser = userService.getCurrentLoggedInUser();
+        List<Task> taskListIntern = taskService.list(currentUser);
+        for (Task task : taskListIntern) {
+            if(task.getId() != id && task.isInProcess()){
+                task.setInProcess(false);
+                taskService.save(task);
+            }
+            if(task.getId() == id) {
+                task.setSpentTime(taskSpentTime);
+                task.setInProcess(true);
+                taskService.save(task);
+            }
+        }
+        return JsonResponse.builder()
+                .id(id)
+                .spentTime(taskSpentTime)
+                .inProcess(true)
+                .build();
+    }
 
-        Task task = taskService.getById(id);
-        task.setInProcess(false);
-        int wasted = workLogService.getSpendTime(id);
-        task.setSpentTime(wasted);
-        taskService.save(task);
 
-        //--> tmp code for outputting logs to the console
-        System.out.println("Задача с id: " + id + " остановлена");
-        System.out.println("WorkLog id: " + workLog.getId() + " Время конца " + workLog.getEndTime());
-        //<--
-        return "redirect:/tasks/list";
+    @RequestMapping(value = "workLog/api/stop/{id}", produces = "application/json", method = RequestMethod.POST)
+    public @ResponseBody
+    JsonResponse stop(@PathVariable Integer id, @RequestBody Long taskSpentTime){
+        User currentUser = userService.getCurrentLoggedInUser();
+        List<Task> taskListIntern = taskService.list(currentUser);
+        for (Task task : taskListIntern) {
+            if(task.getId() == id){
+                task.setSpentTime(taskSpentTime);
+                task.setInProcess(false);
+                taskService.save(task);
+            }
+        }
+        return JsonResponse.builder()
+                .id(id)
+                .spentTime(taskSpentTime)
+                .inProcess(false)
+                .build();
     }
 }

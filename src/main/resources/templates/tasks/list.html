@@ -2,50 +2,34 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 
-    <title th:text="#{tasks.tasks}"></title>
+    <title th:text="Задачи"></title>
 
     <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
+    <script th:src="@{/js/stopwatch.js}"></script>
 </head>
 <body>
 <div class="container">
     <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
     <a th:href="${'/tasks/new'}" th:text="#{tasks.newTask}"></a>
-    <div th:if="${not #lists.isEmpty(tasks)}">
-        <h2 th:text="#{tasks.tasks}"></h2>
-        <table class="table table-striped">
+    <div>
+        <h2 th:text="#{menu.tasks}"></h2>
+        <table id="tasks" class="table table-striped display" >
             <tr>
-                <th th:text="#{tasks.id}"></th>
-                <th th:text="#{tasks.name}"></th>
-                <th th:text="#{tasks.description}"></th>
-                <th th:text="#{tasks.tags}"></th>
-                <th th:text="#{tasks.parentTask}"></th>
-                <th th:text="#{tasks.user}"></th>
-                <th th:text="СОСТОЯНИЕ"></th>
-                <th th:text="#{tasks.status}"></th>
-                <th th:text="#{action.actions}"></th>
-                <th th:text="#{tasks.spentTime}"></th>
+                <th th:text="#{tasks.id}">id</th>
+                <th th:text="#{tasks.name}">name</th>
+                <th th:text="#{tasks.description}">description</th>
+                <th th:text="#{tasks.tags}">tag</th>
+                <th th:text="#{tasks.parentTask}">parentTask</th>
+                <th th:text="#{tasks.user}">user</th>
+                <th th:text="#{tasks.condition}">condition</th>
+                <th th:text="#{tasks.status}">status</th>
+                <th th:text="#{tasks.actions}">action</th>
+                <th th:text="#{tasks.spentTime}">spentTime</th>
+                <th th:text="#{tasks.SW}">SW</th>
             </tr>
-            <tr th:each="task : ${tasks}">
-                <td th:text="${task.id}"></td>
-                <td th:text="${task.name}"></td>
-                <td th:text="${task.description}"></td>
-                <td th:text="${task?.tag?.name}"></td>
-                <td th:text="${task?.parentTask?.name}"></td>
-                <td th:text="${task?.user?.username}"></td>
-                <td th:text="${task.inProcess}"></td>
-                <td th:text="${task?.status?.name}"></td>
-                <td>
-                    <ul class="list-inline">
-                        <li><a th:href="${'/tasks/delete/' + task.id}" th:text="#{action.delete}"></a></li>
-                        <li><a th:href="${'/tasks/edit/' + task.id}" th:text="#{action.edit}"></a></li>
-                        <li><a th:href="${'/tasks/details/' + task.id}" th:text="#{action.view}"></a></li>
-                        <li> <a th:if="${task.inProcess == false}" th:href="${'/workLog/start/' + task.id}" th:text="#{action.start}"></a>
-                             <a th:if="${task.inProcess != false}" th:href="${'/workLog/stop/' + task.id}" th:text="#{action.stop}"></a>
-                        </li>
-                    </ul>
-                </td>
-                <td th:text="${task.readableTime}"> </td>
-            </tr>
+            <script th:inline="javascript">
+                $(document).ready(getTable());
+            </script>
         </table>
     </div>
 

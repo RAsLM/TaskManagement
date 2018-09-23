@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Setter
 public class Task {
     @Id
@@ -43,9 +42,7 @@ public class Task {
     private Status status;
 
     @Column
-    private int spentTime;
-
-    private String readableTime;
+    private Long spentTime;
 
     @Column
     private boolean inProcess;
@@ -54,24 +51,38 @@ public class Task {
         return id;
     }
 
-    public String getReadableTime() {
+    public String getName() {
+        return name;
+    }
 
-        int sec = spentTime;
-        int min = spentTime / 60;
-        int hours = min > 0 ? min / 60 : 0;
+    public String getDescription() {
+        return description;
+    }
 
+    public User getUser() {
+        return user;
+    }
 
+    public Tag getTag() {
+        return tag;
+    }
 
-        if (hours > 0){
+    public Task getParentTask() {
+        return parentTask;
+    }
 
-            return String.format("%d:%d:%d", hours, min, sec);
+    public Status getStatus() {
+        return status;
+    }
+
+    public Long getSpentTime() {
+        if (spentTime == null){
+            return 0L;
         }
+        return spentTime;
+    }
 
-        if (min > 0){
-            sec = spentTime % 60;
-            return String.format("%d:%d:%d", hours, min, sec);
-        }
-
-            return String.format("%d:%d:%d", hours, min, sec);
+    public boolean isInProcess() {
+        return inProcess;
     }
 }
