@@ -42,9 +42,9 @@ function start(id, i){
                 xhr.setRequestHeader(header, token);
             }
         },
-        success: function(taskSpentTime) {
-            taskListInternal[i].inProcess = taskSpentTime.inProcess;
-            taskListInternal[i].spentTime = taskSpentTime.spentTime;
+        success: function(jsonResponse) {
+            taskListInternal[i].inProcess = jsonResponse.inProcess;
+            taskListInternal[i].spentTime = jsonResponse.spentTime;
             drawTable();
         },error: function (e) {
             alert(e);
@@ -69,9 +69,9 @@ function stop(id, i){
                 xhr.setRequestHeader(header, token);
             }
         },
-        success: function (taskSpentTime) {
-            taskListInternal[i].inProcess = taskSpentTime.inProcess;
-            taskListInternal[i].spentTime = taskSpentTime.spentTime;
+        success: function (jsonResponse) {
+            taskListInternal[i].inProcess = jsonResponse.inProcess;
+            taskListInternal[i].spentTime = jsonResponse.spentTime;
             drawTable();
         },error: function (e) {
             alert(e);
@@ -139,7 +139,7 @@ function drawTable() {
         cellName.innerHTML = taskListInternal[i].name;
         cellDescription.innerHTML = taskListInternal[i].description;
         cellTeg.innerHTML = taskListInternal[i].tag.name;
-        cellParentTask.innerHTML = "";//taskListInterne[i].parentTask.name;
+        cellParentTask.innerHTML = "";
         cellUser.innerHTML = taskListInternal[i].user.name;
         cellCondition.innerHTML = taskListInternal[i].inProcess;
         cellStatus.innerHTML = taskListInternal[i].status.name;
